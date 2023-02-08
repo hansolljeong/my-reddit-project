@@ -1,6 +1,6 @@
-// import axios from "axios";
+import axios from "axios";
 // import Link from "next/link";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import React, { FormEvent, useState } from "react";
 import InputGroup from "../components/InputGroup";
 // import { useAuthState } from "../context/auth";
@@ -12,31 +12,31 @@ const Register = () => {
   const [errors, setErrors] = useState<any>({});
   // const { authenticated } = useAuthState();
 
-  // let router = useRouter();
+  let router = useRouter();
   // if (authenticated) router.push("/");
 
-  // const handleSubmit = async (event: FormEvent) => {
-  //   event.preventDefault();
-  //   try {
-  //     const res = await axios.post("/auth/register", {
-  //       email,
-  //       password,
-  //       username,
-  //     });
-  //     console.log("res", res);
-  //     router.push("/login");
-  //   } catch (error: any) {
-  //     console.log("error", error);
-  //     setErrors(error.response.data || {});
-  //   }
-  // };
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    try {
+      const res = await axios.post("/auth/register", {
+        email,
+        password,
+        username,
+      });
+      console.log("res", res);
+      router.push("/login");
+    } catch (error: any) {
+      console.log("error", error);
+      setErrors(error.response.data || {});
+    }
+  };
 
   return (
     <div className="bg-white">
       <div className="flex flex-col items-center justify-center h-screen p-6">
         <div className="w-10/12 mx-auto md:w-96">
           <h1 className="mb-2 text-lg font-medium">회원가입</h1>
-          <form /* onSubmit={handleSubmit} */>
+          <form onSubmit={handleSubmit}>
             <InputGroup
               placeholder="Email"
               value={email}
