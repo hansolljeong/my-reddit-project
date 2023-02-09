@@ -14,7 +14,6 @@ const mapError = (errors: Object[]) => {
 
 const register = async (req: Request, res: Response) => {
   const { email, username, password } = req.body;
-  console.log({ email, username, password });
 
   try {
     let errors: any = {};
