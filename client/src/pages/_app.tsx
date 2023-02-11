@@ -17,8 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
       {!authRoute && <NavBar />}
-      <div className={authRoute ? "" : "pt-12 bg-gray-200 min-h-screen"}></div>
-      <Component {...pageProps} />
+      <div className={authRoute ? "" : "pt-12 bg-gray-200 min-h-screen"}>
+        <Component {...pageProps} />
+      </div>
     </AuthProvider>
   );
 }
