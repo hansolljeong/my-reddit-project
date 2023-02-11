@@ -1,10 +1,11 @@
 import { AuthProvider } from "@/context/auth";
 import "@/styles/globals.css";
-import Axios from "axios";
+import axios from "axios";
 import type { AppProps } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  Axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL + "/api";
+  axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL + "/api";
+  axios.defaults.withCredentials = true;
   return (
     <AuthProvider>
       <Component {...pageProps} />
