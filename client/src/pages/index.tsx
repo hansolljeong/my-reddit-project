@@ -1,5 +1,5 @@
-import { useAuthState } from "@/context/auth";
-import { Sub } from "@/types";
+import { useAuthState } from "../context/auth";
+import { Sub } from "../types";
 import axios from "axios";
 import Link from "next/link";
 import useSWR from "swr";

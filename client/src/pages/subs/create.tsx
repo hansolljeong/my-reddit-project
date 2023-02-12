@@ -1,4 +1,4 @@
-import InputGroup from "@/components/InputGroup";
+import InputGroup from "../../components/InputGroup";
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
