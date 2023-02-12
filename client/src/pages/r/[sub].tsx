@@ -7,15 +7,6 @@ import { useAuthState } from "../../context/auth";
 import SideBar from "../../components/SideBar";
 
 const SubPage = () => {
-  const fetcher = async (url: string) => {
-    try {
-      const res = await axios.get(url);
-      return res.data;
-    } catch (error: any) {
-      throw error.response.data;
-    }
-  };
-
   const [ownSub, setOwnSub] = useState(false);
   const { authenticated, user } = useAuthState();
 
@@ -27,7 +18,7 @@ const SubPage = () => {
     data: sub,
     error,
     mutate,
-  } = useSWR(subName ? `/subs/${subName}` : null, fetcher);
+  } = useSWR(subName ? `/subs/${subName}` : null);
 
   useEffect(() => {
     if (!sub || !user) return;
