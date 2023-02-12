@@ -11,7 +11,6 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     const { username }: any = jwt.verify(token, process.env.JWT_SECRET!);
 
     const user = await User.findOneBy({ username });
-    console.log({ user });
 
     // 유저 정보가 없다면 throw error!
     if (!user) throw new Error("Unauthenticated");
