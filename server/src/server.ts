@@ -4,6 +4,7 @@ import { AppDataSource } from "./data-source";
 // default로 export한 router를 authRoutes라는 이름으로 import
 import authRoutes from "./routes/auth";
 import subRoutes from "./routes/subs";
+import postRoutes from "./routes/posts";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -23,6 +24,7 @@ dotenv.config();
 app.get("/", (_, res) => res.send("running"));
 app.use("/api/auth", authRoutes);
 app.use("/api/subs", subRoutes);
+app.use("/api/posts", postRoutes);
 
 let port = 4000;
 app.listen(port, async () => {
