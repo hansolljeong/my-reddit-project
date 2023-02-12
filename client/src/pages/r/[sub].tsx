@@ -27,7 +27,6 @@ const SubPage = () => {
     error,
     mutate,
   } = useSWR(subName ? `/subs/${subName}` : null, fetcher);
-  console.log({ sub });
 
   useEffect(() => {
     if (!sub || !user) return;
