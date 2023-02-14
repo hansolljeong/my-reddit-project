@@ -37,6 +37,30 @@ const PostPage = () => {
     }
   };
 
+  // post, comment 둘 다에 적용할 vote 함수
+  const vote = async (value: number, comment?: Comment) => {
+    // 로그인 상태가 아니라면 login 페이지로 이동
+    if (!authenticated) router.push("/login");
+
+    // 이미 클릭한 vote 버튼을 눌렀을 시에는 reset
+    if (
+      (!comment && value === post?.userVote) ||
+      (comment && comment.userVote === value)
+    )
+      value = 0;
+
+    try {
+      await axios.post("/votes", {
+        identifier,
+        slug,
+        commentIdentifier: comment?.identifier,
+        value,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="flex max-w-5xl px-4 pt-5 mx-auto">
       {/* Post */}
@@ -50,7 +74,7 @@ const PostPage = () => {
                   {/* 좋아요 */}
                   <div
                     className="flex justify-center w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500"
-                    // onClick={() => vote(1)}
+                    onClick={() => vote(1)}
                   >
                     {post.userVote === 1 ? (
                       <FaArrowUp className="text-red-500" />
@@ -62,7 +86,7 @@ const PostPage = () => {
                   {/* 싫어요 */}
                   <div
                     className="flex justify-center w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500"
-                    // onClick={() => vote(-1)}
+                    onClick={() => vote(-1)}
                   >
                     {post.userVote === -1 ? (
                       <FaArrowDown className="text-blue-500" />
@@ -152,7 +176,7 @@ const PostPage = () => {
                     {/* 좋아요 */}
                     <div
                       className="flex justify-center w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500"
-                      // onClick={() => vote(1, comment)}
+                      onClick={() => vote(1, comment)}
                     >
                       {comment.userVote === 1 ? (
                         <FaArrowUp className="text-red-500" />
@@ -164,7 +188,7 @@ const PostPage = () => {
                     {/* 싫어요 */}
                     <div
                       className="flex justify-center w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500"
-                      // onClick={() => vote(-1, comment)}
+                      onClick={() => vote(-1, comment)}
                     >
                       {comment.userVote === -1 ? (
                         <FaArrowDown className="text-red-500" />
