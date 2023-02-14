@@ -1,6 +1,6 @@
 import NavBar from "../components/NavBar";
 import { AuthProvider } from "../context/auth";
-import "@/styles/globals.css";
+import "../styles/globals.css";
 import axios from "axios";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
