@@ -4,21 +4,9 @@ import axios from "axios";
 import Link from "next/link";
 import useSWR from "swr";
 import Image from "next/image";
-import { FormEvent } from "react";
 
 export default function Home() {
   const { authenticated } = useAuthState();
-
-  // Kakao Login
-  const handleSubmitKakao = async (event: FormEvent) => {
-    try {
-      const res = await axios.get(
-        `/oauth/authorize?client_id=${process.env.REST_API_KEY}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code`
-      );
-    } catch (error: any) {
-      console.log(error);
-    }
-  };
 
   const fetcher = async (url: string) => {
     return await axios.get(url).then((res) => res.data);
@@ -31,11 +19,12 @@ export default function Home() {
       {/* 포스트 리스트 */}
       <div className="w-full md:mr-3 md:w-8/12"></div>
       {/* 카카오 로그인 */}
-      <form onSubmit={handleSubmitKakao}>
-        <button className="w-full py-2 mb-1 text-xs font-bold text-gray uppercase bg-yellow-500 border border-gray-400 rounded">
-          카카오 로그인
-        </button>
-      </form>
+      <Link
+        href={`https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REST_API_KEY}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code`}
+        className="ml-2 font-bold hover:cursor-pointer"
+      >
+        카카오 로그인 버튼이에요
+      </Link>
       {/* 사이드바 */}
       <div className="hidden w-4/12 ml-3 md:block">
         <div className="bg-white border rounded">
