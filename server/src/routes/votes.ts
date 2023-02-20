@@ -47,13 +47,13 @@ const vote = async (req: Request, res: Response) => {
       vote.value = value;
 
       // 게시물에 속한 vote or 댓글에 속한 vote
-      // if(comment) {vote.comment = comment}
-      // else vote.post = post;
       comment ? (vote.comment = comment) : (vote.post = post);
       await vote.save();
     } else if (value === 0) {
-      vote.remove();
+      // vote가 존재하고 value가 0이면 db에서 투표를 제거
+      await vote.remove();
     } else if (vote.value !== value) {
+      // vote와 value가 변경된 경우 투표를 업데이트
       vote.value = value;
       await vote.save();
     }
