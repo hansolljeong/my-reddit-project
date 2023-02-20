@@ -14,11 +14,13 @@ const PostPage = () => {
   const { authenticated, user } = useAuthState();
   const [newComment, setNewComment] = useState("");
 
-  const { data: post, error } = useSWR<Post>(
-    identifier && slug ? `/posts/${identifier}/${slug}` : null
-  );
+  const {
+    data: post,
+    error,
+    mutate: postMutate,
+  } = useSWR<Post>(identifier && slug ? `/posts/${identifier}/${slug}` : null);
 
-  const { data: comments, mutate } = useSWR<Comment[]>(
+  const { data: comments, mutate: commentMutate } = useSWR<Comment[]>(
     identifier && slug ? `/posts/${identifier}/${slug}/comments` : null
   );
 
@@ -30,8 +32,8 @@ const PostPage = () => {
       await axios.post(`/posts/${post?.identifier}/${post?.slug}/comments`, {
         body: newComment,
       });
-      mutate();
       setNewComment("");
+      commentMutate();
     } catch (error) {
       console.log(error);
     }
@@ -56,6 +58,8 @@ const PostPage = () => {
         commentIdentifier: comment?.identifier,
         value,
       });
+      postMutate();
+      commentMutate();
     } catch (err) {
       console.log(err);
     }
@@ -191,7 +195,7 @@ const PostPage = () => {
                       onClick={() => vote(-1, comment)}
                     >
                       {comment.userVote === -1 ? (
-                        <FaArrowDown className="text-red-500" />
+                        <FaArrowDown className="text-blue-500" />
                       ) : (
                         <FaArrowDown />
                       )}
