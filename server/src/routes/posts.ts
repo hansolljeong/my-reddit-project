@@ -5,6 +5,24 @@ import Sub from "../entities/Sub";
 import Post from "../entities/Post";
 import Comment from "../entities/Comment";
 
+// Post들을 가져와서 무한스크롤 처리하기
+const getPosts = async (req: Request, res: Response) => {
+  const currentPage: number = (req.query.page || 0) as number;
+  const perPage: number = (req.query.count || 8) as number;
+
+  try {
+    const posts = await Post.find({
+      order: { createdAt: "DESC" },
+      relations: ["sub", "votes", "comments"],
+      skip: currentPage * perPage,
+      take: perPage,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "문제가 발생했습니다." });
+  }
+};
+
 const getPost = async (req: Request, res: Response) => {
   const { identifier, slug } = req.params;
   try {
@@ -99,5 +117,6 @@ router.get("/:identifier/:slug", userMiddleware, getPost);
 router.post("/", userMiddleware, authMiddleware, createPost);
 router.post("/:identifier/:slug/comments", userMiddleware, createPostComment);
 router.get("/:identifier/:slug/comments", userMiddleware, getPostComments);
+router.get("/", userMiddleware, getPosts);
 
 export default router;
