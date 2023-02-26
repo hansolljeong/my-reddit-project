@@ -1,9 +1,11 @@
 import { useAuthState } from "../context/auth";
-import { Sub } from "../types";
+import { Post, Sub } from "../types";
 import axios from "axios";
 import Link from "next/link";
 import useSWR from "swr";
 import Image from "next/image";
+import useSWRInfinite from "swr";
+import PostCard from "@/components/PostCard";
 
 export default function Home() {
   const { authenticated } = useAuthState();
@@ -14,10 +16,34 @@ export default function Home() {
   const address = `/subs/sub/topSubs`;
   const { data: topSubs } = useSWR<Sub[]>(address, fetcher);
 
+  // 무한스크롤로 포스트를 불러오기 위한 함수
+  const getKey = (pageIndex: number, previousPageData: Post[]) => {
+    if (previousPageData && !previousPageData.length) return null;
+    return `/posts?page=${pageIndex}`;
+  };
+
+  const {
+    data,
+    error,
+    size: page,
+    setSize: setPage,
+    isValidating,
+    mutate,
+  } = useSWRInfinite<Post[]>(getKey);
+
+  const isInitialLoading = !data && !error;
+  const posts: Post[] = data ? ([] as Post[]).concat(...data) : [];
+
   return (
     <div className="flex max-w-5xl px-4 pt-5 mx-auto">
       {/* 포스트 리스트 */}
       <div className="w-full md:mr-3 md:w-8/12"></div>
+      {isInitialLoading && (
+        <p className="text-lg text-center">로딩중입니다...</p>
+      )}
+      {posts?.map((post) => (
+        <PostCard key={post.identifier} post={post} />
+      ))}
       {/* 카카오 로그인 */}
       <Link
         href={`https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REST_API_KEY}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code`}
