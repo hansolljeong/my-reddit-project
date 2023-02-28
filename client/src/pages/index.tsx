@@ -4,7 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import useSWR from "swr";
 import Image from "next/image";
-import useSWRInfinite from "swr";
+import useSWRInfinite from "swr/infinite";
 import PostCard from "@/components/PostCard";
 
 export default function Home() {
@@ -37,13 +37,14 @@ export default function Home() {
   return (
     <div className="flex max-w-5xl px-4 pt-5 mx-auto">
       {/* 포스트 리스트 */}
-      <div className="w-full md:mr-3 md:w-8/12"></div>
-      {isInitialLoading && (
-        <p className="text-lg text-center">로딩중입니다...</p>
-      )}
-      {posts?.map((post) => (
-        <PostCard key={post.identifier} post={post} />
-      ))}
+      <div className="w-full md:mr-3 md:w-8/12">
+        {isInitialLoading && (
+          <p className="text-lg text-center">로딩중입니다...</p>
+        )}
+        {posts?.map((post) => (
+          <PostCard key={post.identifier} post={post} />
+        ))}
+      </div>
       {/* 카카오 로그인 */}
       <Link
         href={`https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REST_API_KEY}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code`}
