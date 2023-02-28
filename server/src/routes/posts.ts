@@ -17,6 +17,12 @@ const getPosts = async (req: Request, res: Response) => {
       skip: currentPage * perPage,
       take: perPage,
     });
+
+    if (res.locals.user) {
+      posts.forEach((p) => p.setUserVote(res.locals.user));
+    }
+
+    return res.json(posts);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "문제가 발생했습니다." });
