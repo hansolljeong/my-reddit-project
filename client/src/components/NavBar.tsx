@@ -54,19 +54,24 @@ const NavBar: React.FC = () => {
             </button>
           ) : (
             <>
+              {/* 카카오 로그인 */}
+              <Link
+                href={`https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REST_API_KEY}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code`}
+                className="w-25 px-2 pt-1 mr-2 text-sm text-center text-blue-500 border border-blue-500 rounded h-7"
+              >
+                카카오 로그인
+              </Link>
               <Link
                 href="/login"
-                className="w-20 px-2 pt-1 mr-2 text-sm text-center text-blue-500 border border-blue-500 rounded h-7">
-                
-                  로그인
-                
+                className="w-20 px-2 pt-1 mr-2 text-sm text-center text-blue-500 border border-blue-500 rounded h-7"
+              >
+                로그인
               </Link>
               <Link
                 href="/register"
-                className="w-20 px-2 pt-1 text-sm text-center text-white bg-gray-400 rounded h-7">
-                
-                  회원가입
-                
+                className="w-20 px-2 pt-1 text-sm text-center text-white bg-gray-400 rounded h-7"
+              >
+                회원가입
               </Link>
             </>
           ))}

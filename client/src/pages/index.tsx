@@ -45,13 +45,6 @@ export default function Home() {
           <PostCard key={post.identifier} post={post} />
         ))}
       </div>
-      {/* 카카오 로그인 */}
-      <Link
-        href={`https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REST_API_KEY}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code`}
-        className="ml-2 font-bold hover:cursor-pointer"
-      >
-        카카오 로그인 버튼이에요
-      </Link>
       {/* 사이드바 */}
       <div className="hidden w-4/12 ml-3 md:block">
         <div className="bg-white border rounded">
