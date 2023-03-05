@@ -61,12 +61,11 @@ export default function Home() {
       (entries) => {
         // isIntersecting: 관찰 대상의 교차 상태(Boolean)
         if (entries[0].isIntersecting) {
-          console.log("마지막 포스트에 왔습니다.");
           setPage(page + 1);
           observer.unobserve(element);
         }
       },
-      { threshold: 0.5 }
+      { threshold: 1 }
     );
     // 대상 요소의 관찰을 시작
     observer.observe(element);
