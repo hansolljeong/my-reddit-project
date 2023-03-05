@@ -6,6 +6,7 @@ import useSWR from "swr";
 import Image from "next/image";
 import useSWRInfinite from "swr/infinite";
 import PostCard from "@/components/PostCard";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const { authenticated } = useAuthState();
@@ -34,6 +35,43 @@ export default function Home() {
   const isInitialLoading = !data && !error;
   const posts: Post[] = data ? ([] as Post[]).concat(...data) : [];
 
+  // 스크롤을 내려서 observedPost에 닿으면
+  // 다음 페이지 포스트들을 가져오기 위한 id state
+  const [observedPost, setObservedPost] = useState("");
+
+  // 무한 스크롤 기능 구현
+  useEffect(() => {
+    // 포스트가 없다면 return
+    if (!posts || posts.length === 0) return;
+    // posts 배열 안에 마지막 post의 id를 가져오기
+    const id = posts[posts.length - 1].identifier;
+    // posts 배열에 post가 추가돼서 마지막 post가 바뀌었다면
+    // 바뀐 post 중 마지막 post를 observedPost로
+    if (id !== observedPost) {
+      setObservedPost(id);
+      observeElement(document.getElementById(id));
+    }
+  }, [posts]);
+
+  const observeElement = (element: HTMLElement | null) => {
+    if (!element) return;
+    // 브라우저 ViewPort와 설정한 요소의 교차점을 관찰
+    const observer = new IntersectionObserver(
+      // entries는 IntersectionObserverEntry 인스턴스의 배열
+      (entries) => {
+        // isIntersecting: 관찰 대상의 교차 상태(Boolean)
+        if (entries[0].isIntersecting) {
+          console.log("마지막 포스트에 왔습니다.");
+          setPage(page + 1);
+          observer.unobserve(element);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    // 대상 요소의 관찰을 시작
+    observer.observe(element);
+  };
+
   return (
     <div className="flex max-w-5xl px-4 pt-5 mx-auto">
       {/* 포스트 리스트 */}
@@ -42,7 +80,7 @@ export default function Home() {
           <p className="text-lg text-center">로딩중입니다...</p>
         )}
         {posts?.map((post) => (
-          <PostCard key={post.identifier} post={post} />
+          <PostCard key={post.identifier} post={post} mutate={mutate} />
         ))}
       </div>
       {/* 사이드바 */}
@@ -92,4 +130,8 @@ export default function Home() {
       </div>
     </div>
   );
+}
+
+function observeElement(arg0: HTMLElement | null) {
+  throw new Error("Function not implemented.");
 }
