@@ -8,10 +8,14 @@ import Link from "next/link";
 import Image from "next/image";
 
 const UserPage = () => {
+  // router 활용
   const router = useRouter();
+  // router를 까보면 query 부분에서 username 가져올 수 있음
   const username = router.query.username;
 
+  // 데이터 패칭
   const { data, error } = useSWR(username ? `/users/${username}` : null);
+  // 데이터가 없으면 아무것도 렌더링 하지 않기
   if (!data) return null;
   return (
     <div className="flex max-w-5xl px-4 pt-5 mx-auto">
