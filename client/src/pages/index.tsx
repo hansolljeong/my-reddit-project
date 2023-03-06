@@ -61,6 +61,7 @@ export default function Home() {
       (entries) => {
         // isIntersecting: 관찰 대상의 교차 상태(Boolean)
         if (entries[0].isIntersecting) {
+          console.log("마지막 포스트에 도착");
           setPage(page + 1);
           observer.unobserve(element);
         }
@@ -129,8 +130,4 @@ export default function Home() {
       </div>
     </div>
   );
-}
-
-function observeElement(arg0: HTMLElement | null) {
-  throw new Error("Function not implemented.");
 }
