@@ -68,6 +68,7 @@ const PostPage = () => {
   return (
     <div className="flex max-w-5xl px-4 pt-5 mx-auto">
       {/* Post */}
+      {/* git test */}
       <div className="w-full md: mr-3 md:w-8/12">
         <div className="bg-white rounded">
           {post && (
