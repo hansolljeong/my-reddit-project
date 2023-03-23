@@ -32,7 +32,7 @@ app.use("/api/users", userRoutes);
 
 let port = 4000;
 app.listen(port, async () => {
-  console.log(`Server running at ${process.env.APP_URL}:${port}`);
+  console.log(`Server running at ${process.env.APP_URL}`);
 
   AppDataSource.initialize()
     .then(async () => {
